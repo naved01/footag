@@ -1,13 +1,21 @@
-import javax.swing.JFrame;
 import java.awt.EventQueue;
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
 
 public class Footag extends JFrame {
     
-    public Footag() {
-       setUI();
+    public Footag() {      
+       
+        UI_init();
+        
+        Toolbar toolbar = new Toolbar();
+        setLayout(new BorderLayout());
+        add(toolbar);
+       
     }
 
-    public void setUI() {
+    public void UI_init() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocation(100, 100);
         setSize(700, 500);
@@ -16,11 +24,11 @@ public class Footag extends JFrame {
     } 
     
     /* Main method */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
+    public static void main(String[] args) {       
+        EventQueue.invokeLater(new Runnable() {          
             public void run() {
                 Footag footag = new Footag();
-            } 
-        });        
-    }
+            }                        
+        });                      
+    }  
 }

@@ -5,7 +5,7 @@ J = java
 .java.class:
 	$(JC) $(JFLAGS) $*.java
 
-CLASSES = \
+CLASSES = Toolbar.java \
         Footag.java 
 
 default: classes
