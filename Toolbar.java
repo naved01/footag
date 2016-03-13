@@ -44,18 +44,6 @@ public class Toolbar extends JPanel implements Observer {
                     File file = jf.getSelectedFile();
                     ImageModel imageModel = new ImageModel(file);
                     model.addImage(imageModel);
-                    /*
-                    BufferedImage bi;
-                    try
-                    {
-                        bi = ImageIO.read(file);
-                        filterByLabel.setIcon(new ImageIcon(bi));
-                        System.out.println();
-                    }
-                    catch(IOException error) {
-                        error.printStackTrace();
-                    }
-                    */
                 }
             }
         });

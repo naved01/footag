@@ -1,6 +1,6 @@
 import java.awt.EventQueue;
 import java.awt.BorderLayout;
-
+import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class Footag extends JFrame {
@@ -15,6 +15,7 @@ public class Footag extends JFrame {
         Toolbar toolbar = new Toolbar(imageCollectionModel);
         imageCollectionModel.addObserver(toolbar);
         
+        
         add(toolbar, BorderLayout.PAGE_START);
         add(imageCollectionView);
     }
@@ -22,7 +23,8 @@ public class Footag extends JFrame {
     public void UI_init() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocation(100, 100);
-        setSize(700, 500);
+        setSize(750, 500);
+        setMinimumSize(new Dimension(360, 300));
         setLayout(new BorderLayout());
         setTitle("footag");
         setVisible(true);         

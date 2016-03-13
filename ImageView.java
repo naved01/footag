@@ -11,6 +11,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
+import java.awt.Dimension;
 import javax.swing.BorderFactory;
 
 public class ImageView extends JPanel implements Observer {
@@ -26,7 +27,9 @@ public class ImageView extends JPanel implements Observer {
     
     ImageView(ImageModel model_) {
         
-        setBorder(BorderFactory.createLineBorder(Color.black));        
+        setPreferredSize(new Dimension(350, 120));
+        
+        //setBorder(BorderFactory.createLineBorder(Color.black));        
         model = model_;
         file = new File(model.getPath());
         try {
@@ -39,11 +42,8 @@ public class ImageView extends JPanel implements Observer {
         }
         
         name = new JLabel(model.getName());
-        //name.setAlignmentX(Component.CENTER_ALIGNMENT);
         date = new JLabel(model.getCreationDate());
-        //date.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //rate = new JLabel(model.getRating());
-        
+       
         add(thumbnailImg);
         metadata = new JPanel();
         metadata.setLayout(new BoxLayout(metadata, BoxLayout.Y_AXIS));

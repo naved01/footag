@@ -4,6 +4,7 @@ import java.util.Observable;
 
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
+import java.awt.GridLayout;
 import java.awt.FlowLayout;
 
 public class ImageCollectionView extends JPanel implements Observer {
@@ -29,7 +30,7 @@ public class ImageCollectionView extends JPanel implements Observer {
         if (layout == ImageCollectionModel.LayoutType.LIST_LAYOUT) {
             setLayout(new BoxLayout(ImageCollectionView.this, BoxLayout.Y_AXIS));
         } else if (layout == ImageCollectionModel.LayoutType.GRID_LAYOUT) {
-            setLayout(new FlowLayout());
+            setLayout(new FlowLayout(FlowLayout.LEFT));
         }
     }
     

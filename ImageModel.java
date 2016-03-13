@@ -1,6 +1,7 @@
 import java.util.Observable;
 import java.util.Date;
 import java.io.File;
+import java.text.SimpleDateFormat;
 
 public class ImageModel extends Observable {
     
@@ -8,6 +9,7 @@ public class ImageModel extends Observable {
     private String name;
     private String path;
     private Date creationDate;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
     private static int duplicateIndex = 0;
     
@@ -41,9 +43,10 @@ public class ImageModel extends Observable {
     }
     
     public ImageModel(File image) {
-        this.name = "unknown";
+        
+        this.name = image.getName();
         this.path = image.getAbsolutePath();
-        this.creationDate = new Date();
+        this.creationDate = new Date(image.lastModified());
         this.rating = 0;
     }
     
@@ -60,7 +63,8 @@ public class ImageModel extends Observable {
     }
     
     public String getCreationDate() {
-        return creationDate.toString();
+        return dateFormat.format(creationDate).toString();
+        
     }
     
     public void setRating(int rating) {
@@ -78,6 +82,5 @@ public class ImageModel extends Observable {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-    
-    
+       
 }
