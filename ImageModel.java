@@ -1,9 +1,10 @@
 import java.util.Observable;
 import java.util.Date;
+import java.io.File;
 
 public class ImageModel extends Observable {
     
-    private int rating;      
+    private int rating;
     private String name;
     private String path;
     private Date creationDate;
@@ -39,6 +40,13 @@ public class ImageModel extends Observable {
         this.rating = rating;
     }
     
+    public ImageModel(File image) {
+        this.name = "unknown";
+        this.path = image.getAbsolutePath();
+        this.creationDate = new Date();
+        this.rating = 0;
+    }
+    
     public int getRating() {
         return rating;
     }
@@ -51,8 +59,8 @@ public class ImageModel extends Observable {
         return path;
     }
     
-    public Date getCreationDate() {
-        return creationDate;
+    public String getCreationDate() {
+        return creationDate.toString();
     }
     
     public void setRating(int rating) {
