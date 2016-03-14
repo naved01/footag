@@ -24,13 +24,19 @@ public class ImageView extends JPanel implements Observer {
     JLabel date;
     JPanel metadata;
     JLabel rate;
+    RatingPanel ratingPanel;
+    
+    public int getRating() {
+        return model.getRating();
+    }
     
     ImageView(ImageModel model_) {
         
         setPreferredSize(new Dimension(350, 120));
         
-        //setBorder(BorderFactory.createLineBorder(Color.black));        
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));        
         model = model_;
+
         file = new File(model.getPath());
         try {
             thumbnail = ImageIO.read(file).getScaledInstance(100, 100, BufferedImage.SCALE_SMOOTH);
@@ -43,7 +49,7 @@ public class ImageView extends JPanel implements Observer {
         
         name = new JLabel(model.getName());
         date = new JLabel(model.getCreationDate());
-       
+        
         add(thumbnailImg);
         metadata = new JPanel();
         metadata.setLayout(new BoxLayout(metadata, BoxLayout.Y_AXIS));
@@ -51,12 +57,13 @@ public class ImageView extends JPanel implements Observer {
         metadata.add(date);
         
         add(metadata);
-        //add(rate);
+        ratingPanel = new RatingPanel(model);
+        model.addObserver(ratingPanel);
+        add(ratingPanel);
     }
 
     @Override 
     public void update(Observable o, Object obj) {
-        
     }
     
 }

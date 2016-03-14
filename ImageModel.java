@@ -1,11 +1,10 @@
-import java.util.Observable;
+
 import java.util.Date;
 import java.io.File;
 import java.text.SimpleDateFormat;
 
-public class ImageModel extends Observable {
+public class ImageModel extends Model {
     
-    private int rating;
     private String name;
     private String path;
     private Date creationDate;
@@ -42,16 +41,11 @@ public class ImageModel extends Observable {
         this.rating = rating;
     }
     
-    public ImageModel(File image) {
-        
+    public ImageModel(File image) {       
         this.name = image.getName();
         this.path = image.getAbsolutePath();
         this.creationDate = new Date(image.lastModified());
         this.rating = 0;
-    }
-    
-    public int getRating() {
-        return rating;
     }
     
     public String getName() {
@@ -65,10 +59,6 @@ public class ImageModel extends Observable {
     public String getCreationDate() {
         return dateFormat.format(creationDate).toString();
         
-    }
-    
-    public void setRating(int rating) {
-        this.rating = rating;
     }
     
     public void setName(String name) {

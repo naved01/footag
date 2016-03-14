@@ -1,8 +1,7 @@
 
-import java.util.Observable;
 import java.util.ArrayList;
 
-public class ImageCollectionModel extends Observable {
+public class ImageCollectionModel extends Model {
     
     public static enum LayoutType {
         GRID_LAYOUT, 
@@ -11,6 +10,7 @@ public class ImageCollectionModel extends Observable {
 
     private LayoutType layout;    
     private ArrayList<ImageModel> images;
+
 
     public ImageCollectionModel() {
         layout = LayoutType.GRID_LAYOUT;  

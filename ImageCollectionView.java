@@ -13,13 +13,14 @@ public class ImageCollectionView extends JPanel implements Observer {
     ImageCollectionModel.LayoutType layout;
     ArrayList<ImageView> imageViews;
     
-    public ImageCollectionView(ImageCollectionModel model_) {       
+    public ImageCollectionView(ImageCollectionModel model_) {
         model = model_;
         imageViews = new ArrayList<ImageView>();
         setCurrentLayout(model.getLayout());
        for (int i = 0; i < model.numImages(); i++) {
            ImageModel imageModel = model.getImage(i);
            ImageView imageView = new ImageView(imageModel);
+           imageModel.addObserver(imageView);
            imageViews.add(imageView);
            this.add(imageView);
        }
@@ -37,17 +38,23 @@ public class ImageCollectionView extends JPanel implements Observer {
     @Override 
     public void update(Observable o, Object obj) {
 
+        removeAll();
+
         if (model.numImages() > imageViews.size()) {
            ImageModel imageModel = model.getImage(model.numImages() - 1);
            ImageView imageView = new ImageView(imageModel);
-           
-           imageViews.add(imageView);
-           this.add(imageView);
+           imageViews.add(imageView); 
+           imageModel.addObserver(imageView);
+           //imageModel.addObserver(this);
         }
         
-        if(layout != model.getLayout()) {
-            setCurrentLayout(model.getLayout());          
-        }
+        setCurrentLayout(model.getLayout());  
+        
+        for (int i = 0; i < imageViews.size(); i++) {
+            if (imageViews.get(i).getRating() >= model.getRating()) {
+                this.add(imageViews.get(i));
+            }   
+        }        
         
         revalidate();
         repaint();       
