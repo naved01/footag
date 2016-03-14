@@ -14,7 +14,6 @@ public class Model extends Observable {
     
     public void setRating(int rating) {
         this.rating = rating;
-                System.out.println(this.rating);
         setChanged();
         notifyObservers();
     }   

@@ -6,10 +6,13 @@ import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.File;
 
+import javax.swing.JCheckBox;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -21,8 +24,9 @@ import javax.swing.JPanel;
 public class Toolbar extends JPanel implements Observer {
     
     ImageCollectionModel model;
-    JLabel titleLabel, filterByLabel;
+    JLabel titleLabel;
     JPanel setLayoutPanel, titlePanel;
+    JCheckBox filterEnabled;
     JButton setGridLayoutButton, setListLayoutButton, load;
     private	ImageIcon gridIcon, listIcon, loadIcon;
     RatingPanel filterPanel;
@@ -72,7 +76,18 @@ public class Toolbar extends JPanel implements Observer {
         });     
         
         titleLabel = new JLabel("Fotag!");
-        filterByLabel = new JLabel("Filter by: ");
+        filterEnabled = new JCheckBox("filter");
+        filterEnabled.setSelected(true);
+        filterEnabled.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                System.err.println(e.getStateChange());
+                if (e.getStateChange() == 1) {
+                    model.setFilterEnabled(true);
+                } else {
+                    model.setFilterEnabled(false);
+                }           
+            }
+        });
 
         setLayoutPanel = new JPanel();
         setLayoutPanel.add(setGridLayoutButton);
@@ -80,9 +95,12 @@ public class Toolbar extends JPanel implements Observer {
         setLayoutPanel.add(load);
         this.add(setLayoutPanel, BorderLayout.LINE_START);
         
-        filterPanel =  new RatingPanel(model);
+        filterPanel = new RatingPanel(model);
         model.addObserver(filterPanel);
-        this.add(filterPanel, BorderLayout.LINE_END);
+        JPanel p = new JPanel();
+        p.add(filterPanel);
+        p.add(filterEnabled);
+        this.add(p, BorderLayout.LINE_END);
         
         titlePanel = new JPanel();
         titlePanel.add(titleLabel);
@@ -91,7 +109,15 @@ public class Toolbar extends JPanel implements Observer {
     
     @Override
     public void update(Observable o, Object obj) {
-        /* changes to the UI when model is changed */
+        
+        if (model.isFilterEnabled() && filterPanel.isVisible() == false ) {
+            filterPanel.setVisible(true);
+        } else if (!model.isFilterEnabled() && filterPanel.isVisible() == true) {
+            filterPanel.setVisible(false);
+            model.setRating(0);
+        }
+        revalidate();
+        repaint();
     }
     
 }

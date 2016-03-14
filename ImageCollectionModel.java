@@ -9,10 +9,12 @@ public class ImageCollectionModel extends Model {
     };
 
     private LayoutType layout;    
+    private boolean filterEnabled;
     private ArrayList<ImageModel> images;
 
 
     public ImageCollectionModel() {
+        filterEnabled = false;
         layout = LayoutType.GRID_LAYOUT;  
         images = new ArrayList<ImageModel>();        
     }
@@ -51,4 +53,15 @@ public class ImageCollectionModel extends Model {
     public int numImages() {
         return images.size();
     }
+    
+    public boolean isFilterEnabled() {
+        return filterEnabled;
+    }
+    
+    public void setFilterEnabled(boolean filterEnabled) {
+        this.filterEnabled = filterEnabled;
+        setChanged();
+        notifyObservers(); 
+    } 
+    
 }
