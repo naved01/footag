@@ -6,10 +6,13 @@ J = java
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = Toolbar.java \
+          ImageFrame.java \
+          Model.java \
           ImageModel.java \
           ImageCollectionModel.java \
           ImageCollectionView.java \
           ImageView.java \
+          RatingPanel.java \
           Footag.java 
 
 default: classes

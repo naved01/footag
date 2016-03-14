@@ -7,9 +7,12 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JFrame;
 import javax.swing.BoxLayout;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
@@ -42,6 +45,12 @@ public class ImageView extends JPanel implements Observer {
             thumbnail = ImageIO.read(file).getScaledInstance(100, 100, BufferedImage.SCALE_SMOOTH);
             thumbnailImg = new JLabel();
             thumbnailImg.setIcon(new ImageIcon(thumbnail));
+            thumbnailImg.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                  JFrame imageFrame =  new ImageFrame(model.getPath());
+                }
+            });
         }
         catch (IOException error) {
             error.printStackTrace();

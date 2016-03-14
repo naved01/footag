@@ -52,7 +52,6 @@ public class RatingPanel extends JPanel implements Observer {
         heart3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                        System.out.println(" yolo");
                 model.setRating(3);
             }
         });
@@ -76,11 +75,9 @@ public class RatingPanel extends JPanel implements Observer {
     }
     
     private void updateIcons() {
-        System.out.println(" updating icons ");
         if (model.getRating() >= 1) {
             heart1.setIcon(new ImageIcon("filledHeart.png"));
         } else {
-                    System.out.println(" setting empty heart for heart1 ");
             heart1.setIcon(new ImageIcon("emptyHeart.png"));
         }
 
@@ -106,7 +103,7 @@ public class RatingPanel extends JPanel implements Observer {
             heart5.setIcon(new ImageIcon("filledHeart.png"));
         } else {
             heart5.setIcon(new ImageIcon("emptyHeart.png"));
-        }  
+        }
     }
     
     public void update(Observable o, Object obj) {
