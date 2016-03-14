@@ -9,12 +9,18 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 //import javax.swing.JOptionPane;
 
 public class Footag extends JFrame {
     
     ImageCollectionModel imageCollectionModel;
     ImageCollectionView imageCollectionView;
+    JScrollPane pane;
     Toolbar toolbar;
     
     public Footag() {            
@@ -43,7 +49,12 @@ public class Footag extends JFrame {
         imageCollectionModel.addObserver(toolbar);        
               
         add(toolbar, BorderLayout.PAGE_START);
-        add(imageCollectionView);
+        pane = new JScrollPane();
+        pane.setViewportView(imageCollectionView);
+        
+        pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        add(pane);
 
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -55,24 +66,21 @@ public class Footag extends JFrame {
                     ObjectOutputStream obj_out = new ObjectOutputStream (new FileOutputStream(file));
                     obj_out.writeObject(imageCollectionModel);
                     obj_out.close();                  
-                } catch(Exception error) {
-                    
+                } catch(Exception error) {         
                     System.out.println("error saving the file");
                     error.printStackTrace();
-                } 
-                
+                }               
 
                 Footag.this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                   
             }
         });   
-   
+
     }
    
-
     public void UI_init() {
         setLocation(100, 100);
-        setSize(750, 500);
-        setMinimumSize(new Dimension(360, 300));
+        setSize(800, 500);
+        setMinimumSize(new Dimension(480, 300));
         setLayout(new BorderLayout());
         setTitle("footag");
         setVisible(true);         

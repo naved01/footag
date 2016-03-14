@@ -12,22 +12,25 @@ import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JCheckBox;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JToggleButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.awt.Font; 
 
 public class Toolbar extends JPanel implements Observer {
     
     ImageCollectionModel model;
     JLabel titleLabel;
     JPanel setLayoutPanel, titlePanel;
-    JCheckBox filterEnabled;
-    JButton setGridLayoutButton, setListLayoutButton, load;
+    JToggleButton setGridLayoutButton, setListLayoutButton;
+
+    JButton load;
     private	ImageIcon gridIcon, listIcon, loadIcon;
     RatingPanel filterPanel;
     
@@ -37,7 +40,7 @@ public class Toolbar extends JPanel implements Observer {
 
         setPreferredSize(new Dimension(700, 50));
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createLineBorder(Color.black));
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         loadIcon = new ImageIcon("load.png");
         load = new JButton(loadIcon);
@@ -47,18 +50,21 @@ public class Toolbar extends JPanel implements Observer {
                 JFileChooser jf = new JFileChooser();
                 jf.setDialogTitle("choose your file");
                 jf.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                jf.setMultiSelectionEnabled(true);
                 int returnVal = jf.showOpenDialog(Toolbar.this);
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = jf.getSelectedFile();
-                    ImageModel imageModel = new ImageModel(file);
-                    model.addImage(imageModel);
+                    File[] files = jf.getSelectedFiles();
+                    for (int i = 0; i < files.length; i++) {
+                        ImageModel imageModel = new ImageModel(files[i]);
+                        model.addImage(imageModel);
+                    }
                 }
             }
         });
         
         gridIcon = new ImageIcon("grid.png");
-        setGridLayoutButton = new JButton(gridIcon);
-                
+        setGridLayoutButton = new JToggleButton(gridIcon);
+        setGridLayoutButton.setSelected(true);        
         setGridLayoutButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -67,29 +73,19 @@ public class Toolbar extends JPanel implements Observer {
         });
         
         listIcon = new ImageIcon("list.png");
-        setListLayoutButton = new JButton(listIcon);
+        setListLayoutButton = new JToggleButton (listIcon);
         setListLayoutButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {   
                 model.setLayout(ImageCollectionModel.LayoutType.LIST_LAYOUT);
             }
         });     
-        
+        ButtonGroup layoutGroup = new ButtonGroup();
+        layoutGroup.add(setGridLayoutButton);
+        layoutGroup.add(setListLayoutButton);
         titleLabel = new JLabel("Fotag!");
-        filterEnabled = new JCheckBox("filter");
-        filterEnabled.setSelected(true);
-        filterEnabled.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                System.err.println(e.getStateChange());
-                if (e.getStateChange() == 1) {
-                    model.setFilterEnabled(true);
-                } else {
-                    model.setFilterEnabled(false);
-                }           
-            }
-        });
-
+        titleLabel.setFont(new Font("Serif", Font.PLAIN, 18));
+        
         setLayoutPanel = new JPanel();
         setLayoutPanel.add(setGridLayoutButton);
         setLayoutPanel.add(setListLayoutButton);
@@ -98,10 +94,7 @@ public class Toolbar extends JPanel implements Observer {
         
         filterPanel = new RatingPanel(model);
         model.addObserver(filterPanel);
-        JPanel p = new JPanel();
-        p.add(filterPanel);
-        p.add(filterEnabled);
-        this.add(p, BorderLayout.LINE_END);
+        this.add(filterPanel, BorderLayout.LINE_END);
         
         titlePanel = new JPanel();
         titlePanel.add(titleLabel);
@@ -111,14 +104,6 @@ public class Toolbar extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object obj) {
         
-        if (model.isFilterEnabled() && filterPanel.isVisible() == false ) {
-            filterPanel.setVisible(true);
-        } else if (!model.isFilterEnabled() && filterPanel.isVisible() == true) {
-            filterPanel.setVisible(false);
-            model.setRating(0);
-        }
-        revalidate();
-        repaint();
     }
     
 }

@@ -4,12 +4,13 @@ import java.io.File;
 import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 import java.awt.Image;
+import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -24,6 +25,7 @@ public class ImageView extends JPanel implements Observer {
     Image thumbnail;
     JLabel thumbnailImg;
     JLabel name;
+    ImageCollectionModel.LayoutType layout;
     JLabel date;
     JPanel metadata;
     JLabel rate;
@@ -33,16 +35,28 @@ public class ImageView extends JPanel implements Observer {
         return model.getRating();
     }
     
+    public void setCurrentLayout(ImageModel.LayoutType layout) {
+        this.layout = layout;
+        if (layout == ImageModel.LayoutType.GRID_LAYOUT) {
+            setBorder(BorderFactory.createEmptyBorder(10,10,10,10));           
+            setLayout(new BoxLayout(ImageView.this, BoxLayout.Y_AXIS));
+            setPreferredSize(new Dimension(300, 220));
+        } else if (layout == ImageModel.LayoutType.LIST_LAYOUT) {
+            setLayout(new FlowLayout(FlowLayout.LEFT));
+            setPreferredSize(new Dimension(380, 180));
+            setMaximumSize(new Dimension(800, 180));
+        }
+    }
+    
     ImageView(ImageModel model_) {
-        
-        setPreferredSize(new Dimension(350, 120));
+
+        model = model_;
         
         setBorder(BorderFactory.createLineBorder(Color.BLACK));        
-        model = model_;
 
         file = new File(model.getPath());
         try {
-            thumbnail = ImageIO.read(file).getScaledInstance(100, 100, BufferedImage.SCALE_SMOOTH);
+            thumbnail = ImageIO.read(file).getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH);
             thumbnailImg = new JLabel();
             thumbnailImg.setIcon(new ImageIcon(thumbnail));
             thumbnailImg.addMouseListener(new MouseAdapter() {
@@ -56,12 +70,14 @@ public class ImageView extends JPanel implements Observer {
             error.printStackTrace();
         }
         
+        
         name = new JLabel(model.getName());
         date = new JLabel(model.getCreationDate());
-        
+        thumbnailImg.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(thumbnailImg);
         metadata = new JPanel();
         metadata.setLayout(new BoxLayout(metadata, BoxLayout.Y_AXIS));
+        metadata.setAlignmentX(Component.CENTER_ALIGNMENT);
         metadata.add(name);
         metadata.add(date);
         
@@ -69,10 +85,13 @@ public class ImageView extends JPanel implements Observer {
         ratingPanel = new RatingPanel(model);
         model.addObserver(ratingPanel);
         add(ratingPanel);
+        
+        setCurrentLayout(model.getLayout());
     }
 
     @Override 
     public void update(Observable o, Object obj) {
+        setCurrentLayout(model.getLayout());
     }
     
 }

@@ -15,7 +15,12 @@ public class ImageFrame extends JFrame {
         
         try {
             File file = new File(path);
-            Image image = ImageIO.read(file).getScaledInstance(800, 600, BufferedImage.SCALE_SMOOTH);
+            BufferedImage imageBuffer = ImageIO.read(file);
+            int width = imageBuffer.getWidth();
+            int height = imageBuffer.getHeight();
+            double scale = determineImageScale(width, height, 800, 600);
+            Image image = imageBuffer.getScaledInstance((int) (width * scale), (int) (height * scale), BufferedImage.SCALE_SMOOTH);
+            
             JLabel imageLabel = new JLabel(new ImageIcon(image));
             add(imageLabel);
         } catch (IOException error) {
@@ -31,4 +36,10 @@ public class ImageFrame extends JFrame {
         setTitle("original image");
         setVisible(true);         
     } 
+    
+    private double determineImageScale(int sourceWidth, int sourceHeight, int targetWidth, int targetHeight) {
+        double scalex = (double) targetWidth / sourceWidth;
+        double scaley = (double) targetHeight / sourceHeight;
+        return Math.min(scalex, scaley);
+    }
 }

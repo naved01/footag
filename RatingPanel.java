@@ -14,6 +14,7 @@ public class RatingPanel extends JPanel implements Observer {
     JLabel heart3;
     JLabel heart4;
     JLabel heart5;
+    JLabel refresh;
     Model model;
 
     public RatingPanel(Model model_) {
@@ -28,7 +29,8 @@ public class RatingPanel extends JPanel implements Observer {
         add(heart2);
         add(heart3);
         add(heart4);
-        add(heart5);                      
+        add(heart5);   
+        add(refresh);                   
     }
     
     private void initUI() {
@@ -71,6 +73,14 @@ public class RatingPanel extends JPanel implements Observer {
                 model.setRating(5);
             }
         });
+        
+        refresh = new JLabel(new ImageIcon("refresh.png"));
+        refresh.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                model.setRating(0);
+            }
+        });        
                 
     }
     

@@ -8,41 +8,22 @@ public class ImageModel extends Model {
     private String name;
     private String path;
     private Date creationDate;
+
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
     private static int duplicateIndex = 0;
-    
-    public ImageModel(String path) {
-        //TODO: check if path is valid
-        name = "awesome_photo(" + duplicateIndex + ").jpg";  //TODO: change to extracting name from path identifier
-        this.path = path;
-        creationDate = new Date();
-        rating = 0;
-    }
-    
-    public ImageModel(String path, Date creationDate) {
-        name = "awesome_photo(" + duplicateIndex + ").jpg";  //TODO: encapsulare        
-        this.path = path;
-        this.creationDate = creationDate;  //TODO: check if the creationDate is correct
-        this.rating = 0;      
-    }
-    
-    public ImageModel(String name, String path, Date creationDate) {
-        this.name = name; // check extension (by calling function)
-        this.path = path;
-        this.creationDate = creationDate;
-        this.rating = 0;      
-    }
-    
-    public ImageModel(String name, String path, Date creationDate, int rating) {
-        this.name = name; //check if the name contains extension. else pull from the path
-        this.path = path;
-        this.creationDate = creationDate;
-        this.rating = rating;
-    }
-    
-    public ImageModel(File image) {       
+     
+    public ImageModel(File image) {  
+        super();     
         this.name = image.getName();
+        if (name.length() > 12) {
+            String extension = "";
+            int i = name.lastIndexOf('.');
+            if (i > 0) {
+                extension = name.substring(i+1);
+            }
+            name = name.substring(0, 6) + "..." + extension; 
+        }
         this.path = image.getAbsolutePath();
         this.creationDate = new Date(image.lastModified());
         this.rating = 0;

@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Observable;
-
+import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
+
 
 public class ImageCollectionView extends JPanel implements Observer {
     
@@ -17,13 +18,13 @@ public class ImageCollectionView extends JPanel implements Observer {
         model = model_;
         imageViews = new ArrayList<ImageView>();
         setCurrentLayout(model.getLayout());
-       for (int i = 0; i < model.numImages(); i++) {
-           ImageModel imageModel = model.getImage(i);
-           ImageView imageView = new ImageView(imageModel);
-           imageModel.addObserver(imageView);
-           imageViews.add(imageView);
-           this.add(imageView);
-       }
+        for (int i = 0; i < model.numImages(); i++) {
+            ImageModel imageModel = model.getImage(i);
+            ImageView imageView = new ImageView(imageModel);
+            imageModel.addObserver(imageView);
+            imageViews.add(imageView);
+            this.add(imageView);
+        }       
     }
     
     public void setCurrentLayout(ImageCollectionModel.LayoutType layout) {
@@ -33,6 +34,16 @@ public class ImageCollectionView extends JPanel implements Observer {
         } else if (layout == ImageCollectionModel.LayoutType.GRID_LAYOUT) {
             setLayout(new FlowLayout(FlowLayout.LEFT));
         }
+    }
+    
+    public int calculateHeight(int width) {
+        int result;
+        if (model.getLayout() == ImageCollectionModel.LayoutType.LIST_LAYOUT) {
+            result =  model.numImages()*200 + 100 ;            
+        } else {
+            result = model.numImages()*240/(Math.max(width / 320, 1)) + 100;
+        }
+        return result;
     }
     
     @Override 
@@ -54,10 +65,18 @@ public class ImageCollectionView extends JPanel implements Observer {
             if (imageViews.get(i).getRating() >= model.getRating()) {
                 this.add(imageViews.get(i));
             }   
-        }        
+        }  
+       /*
+
+         */     
         
         revalidate();
         repaint();       
+    }
+    
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(getParent().getWidth(), calculateHeight(getParent().getWidth()));
     }
     
 }
