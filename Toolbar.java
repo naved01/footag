@@ -2,8 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Dimension;
-import java.util.Observable;
-import java.util.Observer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ItemListener;
@@ -11,6 +9,8 @@ import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JCheckBox;
 import javax.imageio.ImageIO;
@@ -79,6 +79,7 @@ public class Toolbar extends JPanel implements Observer {
         filterEnabled = new JCheckBox("filter");
         filterEnabled.setSelected(true);
         filterEnabled.addItemListener(new ItemListener() {
+            @Override
             public void itemStateChanged(ItemEvent e) {
                 System.err.println(e.getStateChange());
                 if (e.getStateChange() == 1) {

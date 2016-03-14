@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 public class ImageCollectionModel extends Model {
     
+    private static final long serialVersionUID = 1L;
+    
     public static enum LayoutType {
         GRID_LAYOUT, 
         LIST_LAYOUT
@@ -12,11 +14,18 @@ public class ImageCollectionModel extends Model {
     private boolean filterEnabled;
     private ArrayList<ImageModel> images;
 
-
     public ImageCollectionModel() {
         filterEnabled = false;
         layout = LayoutType.GRID_LAYOUT;  
         images = new ArrayList<ImageModel>();        
+    }
+
+    public void loadModel(ImageCollectionModel model) {
+        this.images = model.images;
+        this.layout = model.layout;
+        this.filterEnabled = model.filterEnabled;
+        setChanged();
+        notifyObservers();
     }
 
     public ImageModel getImage(int a) {

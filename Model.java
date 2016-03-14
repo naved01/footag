@@ -1,6 +1,7 @@
 import java.util.Observable;
+import java.io.Serializable;
 
-public class Model extends Observable {
+public class Model extends Observable implements Serializable {
    
     int rating;
     
